@@ -1,0 +1,107 @@
+===========================================
+PROJECT SETUP GUIDE
+===========================================
+
+PROJECT NAME:
+AI-Based Query and RAG APIs using Mistral 7B
+
+DEVELOPED BY:
+Jeya Surya
+
+-------------------------------------------
+SYSTEM REQUIREMENTS
+-------------------------------------------
+- Python 3.10 or above
+- Internet connection (for model download)
+- 8GB+ RAM (recommended)
+- CUDA GPU (optional but improves performance)
+
+-------------------------------------------
+CREATE A VIRTUAL ENVIRONMENT
+-------------------------------------------
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# macOS / Linux
+python3 -m venv venv
+source venv/bin/activate
+
+-------------------------------------------
+INSTALL DEPENDENCIES
+-------------------------------------------
+# Make sure requirements.txt is in the same folder
+pip install -r requirements.txt
+
+-------------------------------------------
+RUNNING THE API (Mongo Query Extractor)
+-------------------------------------------
+# Run this command in your terminal
+uvicorn mongo:app --reload
+
+# The server will start at:
+http://127.0.0.1:8080
+
+-------------------------------------------
+TESTING MONGO QUERY EXTRACTOR
+-------------------------------------------
+# Use Postman, cURL, or a browser extension like "REST Client"
+
+POST URL:
+http://127.0.0.1:8080/extract_mongo
+
+REQUEST BODY (JSON):
+{
+  "query": "Show top 5 transactions from France"
+}
+
+EXPECTED RESPONSE:
+{
+  "mongo_query": {
+    "collection_name": "sales",
+    "field_name": "Country",
+    "field_value": "France",
+    "limit": 5
+  }
+}
+
+-------------------------------------------
+RUNNING THE RAG API
+-------------------------------------------
+# Run this command
+uvicorn rag_api:app --reload
+
+# The server will start at:
+http://127.0.0.1:8000
+
+POST URL:
+http://127.0.0.1:8000/rag
+
+REQUEST BODY (JSON):
+{
+  "query": "What is Langflow?",
+  "context": "Langflow is an open-source tool for building LLM applications using visual flow interfaces."
+}
+
+EXPECTED RESPONSE:
+{
+  "answer": "Langflow is an open-source visual framework for building LLM-based applications."
+}
+
+-------------------------------------------
+TROUBLESHOOTING
+-------------------------------------------
+- If CUDA errors appear, ensure you have the correct PyTorch version for your GPU.
+- If the model doesn’t load, check internet connection.
+- You can reduce GPU/CPU load by replacing the model:
+  mistralai/Mistral-7B-Instruct-v0.2  →  tiiuae/falcon-1b-instruct
+
+-------------------------------------------
+SHUTDOWN SERVER
+-------------------------------------------
+Press CTRL + C in the terminal to stop the FastAPI server.
+
+-------------------------------------------
+SETUP COMPLETE!
+You can now use both APIs for natural language to MongoDB query conversion and context-based Q&A.
+===========================================
