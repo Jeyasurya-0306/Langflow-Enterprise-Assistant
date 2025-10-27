@@ -56,7 +56,7 @@ Two high-performance custom API endpoints were developed using **FastAPI** to ex
 
 1.  **Clone the Repository:**
     ```bash
-    git clone [https://github.com/](https://github.com/)[Your Username]/Langflow-Enterprise-Assistant.git
+    git clone [https://github.com/](https://github.com/)Jeyasurya-0306/Langflow-Enterprise-Assistant.git
     cd Langflow-Enterprise-Assistant
     ```
 2.  **Install Dependencies:** Install all necessary libraries listed in `requirements.txt`:
