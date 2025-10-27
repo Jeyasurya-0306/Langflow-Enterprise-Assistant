@@ -77,4 +77,4 @@ Two high-performance custom API endpoints were developed using **FastAPI** to ex
 
 ## 🧑‍💻 Author
 
-**Jeya Surya** | [Link to your LinkedIn Profile] | [Your Professional Email Address]
+**Jeya Surya** |https://www.linkedin.com/in/jeya-surya-2b8931378?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app | jeyasurya.m02@gmail.com
