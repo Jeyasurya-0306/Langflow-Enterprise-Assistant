@@ -1,77 +1,80 @@
-Langflow Enterprise Assistant: Multi-Tool Orchestrator (RAG & MongoDB)
+# Langflow Enterprise Assistant: Multi-Tool Orchestrator (RAG & MongoDB)
 
-💡 Project Summary
+## 💡 Project Summary
 
-A robust, dual-function enterprise assistant built on Langflow (1.1.2) for rapid deployment of specialized LLM-powered services. This system acts as a unified core intelligence, capable of routing natural language queries to the correct tool flow for both Knowledge Retrieval (RAG) and Database Querying (MongoDB).
+A robust, dual-function enterprise assistant built on **Langflow (1.1.2)** for rapid deployment of specialized LLM-powered services. This system acts as a **unified core intelligence**, capable of routing natural language queries to the correct tool flow for both **Knowledge Retrieval (RAG)** and **Database Querying (MongoDB)**.
 
-The project demonstrates modular design, high efficiency, and professional FastAPI integration for enterprise deployment.
+The project demonstrates modular design, high efficiency, and professional **FastAPI** integration for enterprise deployment.
 
-🎯 Strategic Viability & Dual Functionality
+---
+
+## 🎯 Strategic Viability & Dual Functionality
 
 This single-interface architecture provides high-value intelligence across two critical business needs:
-Function	Solution Flow	Business Value
-Knowledge Retrieval	RAG Pipeline (final demo rag flow.json)	Provides immediate, evidence-based Q&A over internal Strategy and Report PDFs.
-Database Querying	NL-to-Mongo Flow (final demo mongo flow.json)	Allows non-technical users to translate natural language (e.g., "top 5 sales from France") into executable MongoDB queries for real-time analytics.
 
-🏗️ Technical Architecture & Core Components
+| Function | Solution Flow | Key Technology |
+| :--- | :--- | :--- |
+| **Knowledge Retrieval** | **RAG Pipeline (`final demo rag flow.json`)** | Provides immediate, evidence-based Q&A over internal **Strategy and Report PDFs** using FAISS. |
+| **Database Querying** | **NL-to-Mongo Flow (`final demo mongo flow.json`)** | Translates natural language into executable **MongoDB queries** for real-time analytics. |
 
-The system is orchestrated by a central Groq Agent that routes the user's input to one of two custom-hosted API services:
+---
 
-1. Langflow Flows
+## 🏗️ Technical Architecture & Core Components
 
-Flow Name	Description	Key Components
-final flow.json	The Central Router	Primary user interface. It employs an Agent with a system prompt to dynamically select the RAG or MongoDB tool flow.
-final demo rag flow.json	RAG Tool	Utilizes FAISS Vector Store and HuggingFace Embeddings, calling the external RAG API for final answer generation.
-final demo mongo flow.json	MongoDB Tool	Calls the Mongo Query Extractor API, executes the query against a database, and uses an LLM to generate a natural, user-friendly response.
+The system is orchestrated by a central **Agent (`final flow.json`)** that dynamically routes the user's input to one of two custom-hosted API services.
 
-2. Custom Python APIs (FastAPI)
+### 1. Langflow Flows
 
-Two high-performance custom API endpoints were built to execute complex logic external to Langflow:
-File	Framework	Core Function	Model Used
-app.py	FastAPI (uvicorn)	Hosts the RAG endpoint, generating the final answer text based on context retrieved by the RAG flow.	mistralai/Mistral-7B-Instruct-v0.2
-mongo.py	FastAPI (uvicorn)	Hosts the Mongo Query Extractor, translating natural language into a structured JSON query object for MongoDB.	mistralai/Mistral-7B-Instruct-v0.2
+| File Name | Description | Role in System |
+| :--- | :--- | :--- |
+| **`final flow.json`** | **The Central Router** | Primary user interface, employing a **Groq Agent** to select either the RAG Tool or the MongoDB Tool flow. |
+| **`final demo rag flow.json`** | **RAG Tool Flow** | Handles vector store retrieval (FAISS), calling the external `app.py` API for final answer generation. |
+| **`final demo mongo flow.json`** | **MongoDB Tool Flow** | Calls the `mongo.py` API to generate a structured query, executes it, and formats the result. |
 
-⚙️ Setup and Prerequisites
+### 2. Custom Python APIs (FastAPI)
 
-Tested Development Environment
+Two high-performance custom API endpoints were developed using **FastAPI** to execute specialized, model-heavy logic:
 
-The project was developed and verified on the following configuration:
-Component	Specification
-Operating System	Ubuntu 22.04.5 LTS (64-bit)
-Memory	32.0 GiB (Recommended Minimum)
-Processor	Intel® Core™ i5-4690K CPU @ 3.50GHz × 4
+| File | Endpoint Function | LLM Model Used |
+| :--- | :--- | :--- |
+| **`app.py`** | RAG Answer Generator | `mistralai/Mistral-7B-Instruct-v0.2` |
+| **`mongo.py`** | Mongo Query Extractor (NL-to-JSON) | `mistralai/Mistral-7B-Instruct-v0.2` |
 
-Installation Steps
+---
 
-    Clone the Repository:
-    Bash
+## ⚙️ Setup and Prerequisites
 
-git clone https://github.com/[Your Username]/Langflow-Enterprise-Assistant.git
-cd Langflow-Enterprise-Assistant
+### Tested Development Environment
 
-Environment Setup: Create a Python virtual environment and install all dependencies:
-Bash
+| Component | Specification |
+| :--- | :--- |
+| **Operating System** | **Ubuntu 22.04.5 LTS** (64-bit) |
+| **Memory** | **32.0 GiB** (Recommended Minimum) |
+| **Frameworks** | Langflow (1.1.2), FastAPI (0.115.0) |
 
-    python3 -m venv venv
-    source venv/bin/activate
+### Installation Steps
+
+1.  **Clone the Repository:**
+    ```bash
+    git clone [https://github.com/](https://github.com/)[Your Username]/Langflow-Enterprise-Assistant.git
+    cd Langflow-Enterprise-Assistant
+    ```
+2.  **Install Dependencies:** Install all necessary libraries listed in `requirements.txt`:
+    ```bash
     pip install -r requirements.txt
+    ```
+3.  **Run APIs:** The two backend services must be running simultaneously. Follow the detailed instructions in **`setup.txt`**:
+    * **Terminal 1 (Mongo Extractor):** `uvicorn mongo:app --reload` (Runs on `http://127.0.0.1:8080`)
+    * **Terminal 2 (RAG API):** `uvicorn app:app --reload` (Runs on `http://127.0.0.1:8000`)
+4.  **Run Langflow:** Start your local Langflow instance and import the three `.json` flow files to begin testing the integrated system.
 
-    Run APIs: The two backend services must be running simultaneously before launching Langflow. Follow the detailed steps in setup.txt:
+---
 
-        Terminal 1 (Mongo Extractor): uvicorn mongo:app --reload
+## 📄 Documentation
 
-        Terminal 2 (RAG API): uvicorn app:app --reload
+* **Comprehensive Project Report:** The full documentation is included as **`langflow project report .docx`**.
+* **Setup Guide:** Detailed execution instructions for all components are in **`setup.txt`**.
 
-    Run Langflow: Start your local Langflow instance and import the three .json flow files (final flow.json is the main entry point).
+## 🧑‍💻 Author
 
-📄 Deliverables & Further Documentation
-
-File Name	Purpose
-langflow project report .docx	Comprehensive Project Report detailing the Strategic Viability, Architectural Breakdown, and Technical Execution.
-final flow.json	The main Langflow orchestrator file.
-setup.txt	Detailed guide for running both FastAPI services and troubleshooting.
-requirements.txt	Full list of Python dependencies, including fastapi and langflow.
-
-🧑‍💻 Author
-
-Jeya Surya | [Link to your LinkedIn Profile] | [Your Professional Email Address]
+**Jeya Surya** | [Link to your LinkedIn Profile] | [Your Professional Email Address]
